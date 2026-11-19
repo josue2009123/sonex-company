@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titulo %}Carrito · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <h2>Mi carrito</h2>
+  {% if items %}
+  <table>
+    <tr><th>Producto</th><th>Cantidad</th><th>Precio</th></tr>
+    {% for p, c in items %}
+    <tr><td>{{ p.nombre }}</td><td>{{ c }}</td><td>{{ (p.precio * c) | mxn }}</td></tr>
+    {% endfor %}
+  </table>
+  <p class="precio">Total: {{ total | mxn }}</p>
+  <button class="btn btn-rosa" onclick="confirmarPedido(this)">Confirmar pedido</button>
+  {% else %}
+  <p>Tu carrito está vacío. <a href="/tienda">Ve a la tienda</a>.</p>
+  {% endif %}
+</section>
+{% endblock %}

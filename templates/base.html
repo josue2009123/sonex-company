@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block titulo %}Sonex · Audífonos con IA{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <div class="contenedor">
+    <a class="logo" href="/"><img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo Sonex"> Sonex</a>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/tienda">Tienda</a>
+      {% if usuario %}
+        <a href="/carrito">Carrito</a>
+        <a href="/cuenta"><img class="avatar-mini" src="{{ url_for('static', filename='img/avatar-' + usuario['avatar'] + '.jpg') }}" alt="Mi avatar"> Mi cuenta</a>
+        <a href="/logout">Salir</a>
+      {% else %}
+        <a href="/login">Entrar</a>
+        <a href="/registro">Crear cuenta</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main class="contenedor">
+  {% block contenido %}{% endblock %}
+</main>
+<footer>
+  <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Sonex">
+  <p>© Sonex — Diseñamos y producimos audífonos con inteligencia artificial integrada.</p>
+</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Crear cuenta · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <form class="cuenta" method="post">
+    <h2>Crea tu cuenta Sonex</h2>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" required>
+    <label for="email">Correo</label>
+    <input type="email" id="email" name="email" required>
+    <label for="password">Contraseña (6 caracteres o más)</label>
+    <input type="password" id="password" name="password" required minlength="6">
+    <label>Elige tu avatar</label>
+    <div class="avatares">
+      {% for key, a in avatares.items() %}
+      <label>
+        <input type="radio" name="avatar" value="{{ key }}" {% if loop.first %}checked{% endif %}>
+        <img src="{{ url_for('static', filename=a.img) }}" alt="{{ a.nombre }}">
+        <span>{{ a.nombre }}</span>
+      </label>
+      {% endfor %}
+    </div>
+    <button class="btn btn-rosa" type="submit">Crear mi cuenta</button>
+    <p style="margin-top:12px;">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+    <div class="aviso">Después de crear tu cuenta, en “Mi cuenta” puedes activar la huella o el reconocimiento facial de tu celular como llave de acceso.</div>
+  </form>
+</section>
+{% endblock %}

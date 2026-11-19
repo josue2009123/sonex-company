@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar con QR · Sonex{% endblock %}
+{% block contenido %}
+<section style="text-align:center;">
+  <h2>Entrar con código QR</h2>
+  {% if usuario %}
+  <p>Escanea este QR desde tu otro celular para entrar a tu misma cuenta. Dura 5 minutos y solo se usa una vez.</p>
+  <div class="qr-box">
+    <img src="/qr/imagen/{{ qr['token'] }}" alt="Código QR para entrar a Sonex">
+    <p>Código: <span class="codigo-grande">{{ qr['codigo'] }}</span></p>
+  </div>
+  <p>Apruébalo desde tu cuenta, en “Entrar en otro dispositivo”.</p>
+  {% else %}
+  <p id="qr-mensaje">Esperando a que apruebes este inicio de sesión desde tu otro dispositivo…</p>
+  <div id="qr-espera" data-token="{{ qr['token'] }}"></div>
+  <p>Si no eres tú, cierra esta página: nadie entra sin tu aprobación.</p>
+  {% endif %}
+  <p><a href="/">Volver al inicio</a></p>
+</section>
+{% endblock %}

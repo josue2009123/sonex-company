@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block titulo %}Mi cuenta · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <div class="perfil">
+    <img class="avatar" src="{{ url_for('static', filename='img/avatar-' + usuario['avatar'] + '.jpg') }}" alt="Mi avatar">
+    <div>
+      <h2>Hola, {{ usuario['nombre'] }}</h2>
+      <p>{{ usuario['email'] }} · Cuenta creada el {{ usuario['created_at'] }}</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Editar perfil</h2>
+  <form class="cuenta" method="post" style="margin:0; max-width:520px;">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" value="{{ usuario['nombre'] }}">
+    <label>Cambiar avatar</label>
+    <div class="avatares">
+      {% for key, a in avatares.items() %}
+      <label>
+        <input type="radio" name="avatar" value="{{ key }}" {% if usuario['avatar'] == key %}checked{% endif %}>
+        <img src="{{ url_for('static', filename=a.img) }}" alt="{{ a.nombre }}">
+        <span>{{ a.nombre }}</span>
+      </label>
+      {% endfor %}
+    </div>
+    <button class="btn" type="submit">Guardar cambios</button>
+  </form>
+</section>
+
+<section>
+  <h2>Seguridad · Huella y rostro</h2>
+  <div id="aviso-biometria" class="aviso-rosa" style="display:none"></div>
+  <p>Activa la llave de acceso en este dispositivo para entrar con tu huella o tu rostro. Tu huella nunca sale de tu celular.</p>
+  <button class="btn btn-turquesa" onclick="registrarPasskey(this)">Activar huella / rostro en este dispositivo</button>
+  {% if passkeys %}
+  <table>
+    <tr><th>Llave</th><th>Creada</th><th></th></tr>
+    {% for pk in passkeys %}
+    <tr><td>Llave de acceso #{{ pk['id'] }}</td><td>{{ pk['created_at'] }}</td>
+    <td><form method="post" action="/passkey/eliminar/{{ pk['id'] }}"><button class="btn btn-secundario" type="submit">Eliminar</button></form></td></tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No tienes llaves de acceso activadas todavía.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Entrar en otro dispositivo</h2>
+  <p>Genera un código QR para entrar a esta misma cuenta desde otro celular. Dura 5 minutos y solo se puede usar una vez.</p>
+  <form method="post" action="/qr/crear"><button class="btn btn-rosa" type="submit">Generar código QR</button></form>
+  {% if qr_pendientes %}
+  <h3 style="margin-top:16px;">Esperando tu aprobación</h3>
+  <table>
+    <tr><th>Código</th><th></th><th></th></tr>
+    {% for q in qr_pendientes %}
+    <tr><td>{{ q['codigo'] }}</td>
+    <td><a class="btn" href="/qr/{{ q['token'] }}">Ver QR</a></td>
+    <td>
+      <form method="post" action="/qr/aprobar/{{ q['id'] }}" style="display:inline"><button class="btn btn-rosa" type="submit">Aprobar</button></form>
+      <form method="post" action="/qr/rechazar/{{ q['id'] }}" style="display:inline"><button class="btn btn-secundario" type="submit">Rechazar</button></form>
+    </td></tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Mis favoritos</h2>
+  {% if favoritos %}
+  <div class="grid">
+    {% for p in favoritos %}
+    <div class="tarjeta">
+      <a href="/producto/{{ p.id }}"><img src="{{ url_for('static', filename=p.img) }}" alt="{{ p.nombre }}"></a>
+      <h3>{{ p.nombre }}</h3><p class="precio">{{ p.precio | mxn }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}<p>Todavía no tienes favoritos. <a href="/tienda">Ve a la tienda</a>.</p>{% endif %}
+</section>
+
+<section>
+  <h2>Mis pedidos</h2>
+  {% if pedidos %}
+  <table>
+    <tr><th>Pedido</th><th>Fecha</th><th>Productos</th><th>Total</th></tr>
+    {% for p, items in pedidos %}
+    <tr>
+      <td>#{{ p['id'] }}</td><td>{{ p['created_at'] }}</td>
+      <td>{% for it in items %}{{ it['producto'] }} × {{ it['cantidad'] }}<br>{% endfor %}</td>
+      <td>{{ p['total'] | mxn }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}<p>Aún no tienes pedidos. <a href="/tienda">Ve a la tienda</a>.</p>{% endif %}
+</section>
+{% endblock %}

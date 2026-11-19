@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}{{ producto.nombre }} · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <div class="grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="tarjeta"><img style="height:auto" src="{{ url_for('static', filename=producto.img) }}" alt="{{ producto.nombre }}"></div>
+    <div>
+      <h2>{{ producto.nombre }}</h2>
+      <p>{{ producto.tipo }}</p>
+      <p class="precio">{{ producto.precio | mxn }}</p>
+      <p>{{ producto.desc }}</p>
+      <p>
+        <span class="chip">Neural Core</span>
+        <span class="chip">ANC adaptativo</span>
+        <span class="chip">Traducción en vivo</span>
+      </p>
+      <h3>Especificaciones</h3>
+      <ul>
+        {% for s in producto.specs %}<li>{{ s }}</li>{% endfor %}
+      </ul>
+      <div class="acciones" style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">
+        <button class="btn btn-rosa" onclick="agregarCarrito('{{ producto.id }}', this)">Agregar al carrito</button>
+        <button class="btn btn-secundario" onclick="toggleFavorito('{{ producto.id }}', this)">{% if favorito %}♥ En favoritos{% else %}♡ Favorito{% endif %}</button>
+        <a class="btn" href="/tienda">Volver a la tienda</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

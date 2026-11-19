@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="hero">
+  <img class="logo-grande" src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo Sonex">
+  <h1>Escucha lo que importa.<br><span>Sonex lo entiende.</span></h1>
+  <p>Somos Sonex: diseñamos y producimos audífonos con inteligencia artificial integrada. Nuestro Neural Core escucha contigo, cancela el ruido que no quieres y traduce en vivo lo que sí importa.</p>
+  <p>
+    <a class="btn btn-rosa" href="/tienda">Ver la tienda</a>
+    <a class="btn btn-turquesa" href="/registro">Crear mi cuenta</a>
+  </p>
+  <div class="mascotas">
+    <figure><img src="{{ url_for('static', filename='img/avatar-rosa.jpg') }}" alt="Robot rosa de Sonex"><figcaption>Robot rosa — tu avatar en Sonex</figcaption></figure>
+    <figure><img src="{{ url_for('static', filename='img/avatar-turquesa.jpg') }}" alt="Robot turquesa de Sonex"><figcaption>Robot turquesa — tu avatar en Sonex</figcaption></figure>
+  </div>
+</div>
+
+<section>
+  <h2>Lo que hace la IA de Sonex</h2>
+  <div class="grid">
+    <div class="tarjeta"><h3>Neural Core S2</h3><p>El chip de IA de Sonex aprende cómo escuchas y ajusta el sonido a tu oído, en tiempo real.</p></div>
+    <div class="tarjeta"><h3>ANC adaptativo</h3><p>Cancelación de ruido que se adapta al lugar: calle, camión, salón o estudio.</p></div>
+    <div class="tarjeta"><h3>Traducción en vivo</h3><p>Escucha a alguien en otro idioma y recíbelo en el tuyo, sin sacar el celular.</p></div>
+    <div class="tarjeta"><h3>Sonido que se ajusta a ti</h3><p>Bajos, voces y ambiente se equilibran solos según lo que estés escuchando.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Destacados</h2>
+  <div class="grid">
+    {% for p in productos.values() %}
+    <div class="tarjeta">
+      <a href="/producto/{{ p.id }}"><img src="{{ url_for('static', filename=p.img) }}" alt="{{ p.nombre }}"></a>
+      <h3>{{ p.nombre }}</h3>
+      <p>{{ p.tipo }}</p>
+      <p class="precio">{{ p.precio | mxn }}</p>
+      <div class="acciones">
+        <a class="btn" href="/producto/{{ p.id }}">Ver detalles</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

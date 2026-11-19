@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar con código · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <form class="cuenta" method="post">
+    <h2>Entrar con código QR</h2>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <p>Escribe el código de 6 dígitos que aparece junto al QR en tu otro dispositivo.</p>
+    <label for="codigo">Código</label>
+    <input type="text" id="codigo" name="codigo" inputmode="numeric" maxlength="6" required>
+    <button class="btn btn-rosa" type="submit">Continuar</button>
+  </form>
+</section>
+{% endblock %}

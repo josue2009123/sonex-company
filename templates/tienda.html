@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Tienda · Sonex{% endblock %}
+{% block contenido %}
+<section>
+  <h2>Tienda Sonex</h2>
+  <p>Audífonos diseñados y producidos por Sonex, todos con IA integrada: Neural Core, ANC adaptativo y traducción en vivo.</p>
+  <div class="grid">
+    {% for p in productos.values() %}
+    <div class="tarjeta">
+      <a href="/producto/{{ p.id }}"><img src="{{ url_for('static', filename=p.img) }}" alt="{{ p.nombre }}"></a>
+      <h3>{{ p.nombre }}</h3>
+      <p>{{ p.tipo }}</p>
+      <p class="precio">{{ p.precio | mxn }}</p>
+      <div class="acciones">
+        <a class="btn" href="/producto/{{ p.id }}">Ver detalles</a>
+        <button class="btn btn-rosa" onclick="agregarCarrito('{{ p.id }}', this)">Agregar al carrito</button>
+        <button class="btn btn-secundario" onclick="toggleFavorito('{{ p.id }}', this)">{% if p.id in favoritos %}♥ En favoritos{% else %}♡ Favorito{% endif %}</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
